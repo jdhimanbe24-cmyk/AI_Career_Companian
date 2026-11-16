@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+<body>
+
+<div class="auth-shell">
+
+    <div class="auth-grid">
+
+        <div class="auth-visual">
+            <div class="auth-visual-brand">
+                <span class="mark"></span>
+                <span>Career Companion</span>
+            </div>
+
+            <div class="auth-visual-body">
+                <h1>Set up your profile in under a minute.</h1>
+                <p>Join as a student to apply and prep smarter, or as an admin to manage companies and listings.</p>
+
+                <ul class="auth-visual-points">
+                    <li>AI resume analysis &amp; builder</li>
+                    <li>Role-specific interview prep</li>
+                    <li>Real-time application tracking</li>
+                </ul>
+            </div>
+
+            <div class="auth-visual-foot">AI Career &amp; Placement Companion</div>
+        </div>
+
+        <div class="auth-form-panel">
+            <div class="auth-container">
+
+                <h2>Create your account</h2>
+                <p class="subtitle">Set up your profile in under a minute</p>
+
+                {% if error %}
+                <div class="form-error">{{ error }}</div>
+                {% endif %}
+
+                <form method="POST" action="/register">
+
+                    <label>I am a</label>
+                    <div class="role-toggle">
+                        <label>
+                            <input type="radio" name="role" value="student" {% if not role or role == 'student' %}checked{% endif %}>
+                            <span>🎓 Student</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="role" value="admin" {% if role == 'admin' %}checked{% endif %}>
+                            <span>🛠️ Admin</span>
+                        </label>
+                    </div>
+
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="Jiwan Dhiman" value="{{ name or '' }}" required>
+
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="you@example.com" value="{{ email or '' }}" required>
+
+                    <label>Password</label>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" minlength="8" required>
+                        <button type="button" class="password-toggle" data-target="password" aria-label="Show password">👁</button>
+                    </div>
+                    <p class="field-hint" id="password-hint">At least 8 characters, with a number or symbol (e.g. @, #, $)</p>
+
+                    <label>Confirm Password</label>
+                    <div class="password-field">
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        <button type="button" class="password-toggle" data-target="confirm_password" aria-label="Show password">👁</button>
+                    </div>
+
+                    <p id="password-message"></p>
+
+                    <button type="submit">Create Account</button>
+
+                </form>
+
+                <p class="form-footer">
+                    Already have an account?
+                    <a href="/login">Log in</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm_password");
+    const message = document.getElementById("password-message");
+    const passwordHint = document.getElementById("password-hint");
+
+    const SPECIAL_OR_NUMBER = /[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/;
+
+    function isPasswordStrongEnough(value) {
+        return value.length >= 8 && SPECIAL_OR_NUMBER.test(value);
+    }
+
+    function checkPasswordStrength() {
+        if (password.value === "") {
+            passwordHint.textContent = "At least 8 characters, with a number or symbol (e.g. @, #, $)";
+            passwordHint.style.color = "";
+            return;
+        }
+
+        if (isPasswordStrongEnough(password.value)) {
+            passwordHint.textContent = "Looks good ✓";
+            passwordHint.style.color = "#166534";
+        } else {
+            passwordHint.textContent = "Needs at least 8 characters and a number or symbol";
+            passwordHint.style.color = "#991b1b";
+        }
+    }
+
+    function checkPasswordMatch() {
+
+        if (confirmPassword.value === "") {
+            message.textContent = "";
+            return;
+        }
+
+        if (password.value === confirmPassword.value) {
+            message.textContent = "Passwords match ✓";
+            message.style.color = "#166534";
+        } else {
+            message.textContent = "Passwords do not match ✗";
+            message.style.color = "#991b1b";
+        }
+    }
+
+    password.addEventListener("input", checkPasswordStrength);
+    password.addEventListener("input", checkPasswordMatch);
+    confirmPassword.addEventListener("input", checkPasswordMatch);
+
+    document.querySelectorAll(".password-toggle").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var input = document.getElementById(btn.getAttribute("data-target"));
+            if (!input) return;
+            var showing = input.type === "text";
+            input.type = showing ? "password" : "text";
+            btn.textContent = showing ? "👁" : "🙈";
+            btn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+        });
+    });
+</script>
+
+</body>
+</html>

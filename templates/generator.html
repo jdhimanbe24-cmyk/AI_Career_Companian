@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume Generator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+
+</head>
+
+
+<body{% if session.role == 'admin' %} class="theme-admin"{% endif %}>
+
+
+    <!-- ========================= -->
+    <!-- NAVIGATION -->
+    <!-- ========================= -->
+
+    <nav>
+
+        <h2>Career Companion</h2>
+
+        <div>
+            {% if session.role == 'student' %}
+                <a href="/student/dashboard">Dashboard</a>
+                <a href="/jobs">Browse Jobs</a>
+                <a href="/analyzer">Resume Analyzer</a>
+                <a href="/generator" class="active">Resume Generator</a>
+                <a href="/interview-prep">Interview Prep</a>
+                <a href="/student/applications">My Applications</a>
+                <a href="/student/profile">My Profile</a>
+                <a href="/logout" class="nav-logout">Logout</a>
+            {% elif session.role == 'admin' %}
+                <a href="/admin/dashboard">Dashboard</a>
+                <a href="/analyzer">Resume Analyzer</a>
+                <a href="/generator" class="active">Resume Generator</a>
+                <a href="/logout" class="nav-logout">Logout</a>
+            {% else %}
+                <a href="/">Home</a>
+                <a href="/generator" class="active">Resume Generator</a>
+                <a href="/analyzer">Resume Analyzer</a>
+                <a href="/login">Log In</a>
+            {% endif %}
+        </div>
+
+    </nav>
+<div class="breadcrumb-bar narrow">
+    <div class="breadcrumb">
+        {% if session.role == 'student' %}
+        <a href="/student/dashboard">Dashboard</a>
+        {% elif session.role == 'admin' %}
+        <a href="/admin/dashboard">Dashboard</a>
+        {% else %}
+        <a href="/">Home</a>
+        {% endif %}
+        <span class="sep">/</span>
+        <span class="current">Resume Generator</span>
+    </div>
+</div>
+
+
+
+    <!-- ========================= -->
+    <!-- FORM CONTAINER -->
+    <!-- ========================= -->
+
+    <div class="form-container">
+
+        <h1>Create Your Resume</h1>
+
+        <p>
+            Enter your information below. Provide detailed technical
+            information about your projects and experience. The AI will
+            improve the wording while preserving your original facts,
+            technologies, algorithms, datasets and performance metrics.
+        </p>
+
+
+        <form action="/generate_resume" method="POST">
+
+
+            <!-- ========================= -->
+            <!-- PERSONAL INFORMATION -->
+            <!-- ========================= -->
+
+            <h2>Personal Information</h2>
+
+
+            <label for="name">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                required
+            >
+
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required
+            >
+
+
+            <label for="phone">
+                Phone Number
+            </label>
+
+            <input
+                type="text"
+                id="phone"
+                name="phone"
+                required
+            >
+
+
+            <label for="address">
+                Address
+            </label>
+
+            <input
+                type="text"
+                id="address"
+                name="address"
+            >
+
+
+
+            <!-- ========================= -->
+            <!-- CAREER OBJECTIVE -->
+            <!-- ========================= -->
+
+            <h2>Career Objective</h2>
+
+
+            <label for="objective">
+                Career Objective
+            </label>
+
+            <textarea
+                id="objective"
+                name="objective"
+                rows="5"
+                placeholder=""
+            ></textarea>
+
+
+
+            <!-- ========================= -->
+            <!-- COURSE WORK -->
+            <!-- ========================= -->
+
+            <h2>Course Work</h2>
+
+
+            <label for="coursework">
+                Relevant Coursework
+            </label>
+
+            <textarea
+                id="coursework"
+                name="coursework"
+                rows="4"
+                placeholder=""
+            ></textarea>
+
+
+
+            <!-- ========================= -->
+            <!-- EDUCATION -->
+            <!-- ========================= -->
+
+            <h2>Education</h2>
+
+
+            <label for="college">
+                University / College
+            </label>
+
+            <input
+                type="text"
+                id="college"
+                name="college"
+                required
+            >
+
+
+            <label for="degree">
+                Degree
+            </label>
+
+            <input
+                type="text"
+                id="degree"
+                name="degree"
+                required
+            >
+
+
+            <label for="cgpa">
+                CGPA
+            </label>
+
+            <input
+                type="text"
+                id="cgpa"
+                name="cgpa"
+            >
+
+
+            <label for="education_start">
+                Start Date
+            </label>
+
+            <input
+                type="text"
+                id="education_start"
+                name="education_start"
+                placeholder=""
+            >
+
+
+            <label for="education_end">
+                End Date / Expected Graduation
+            </label>
+
+            <input
+                type="text"
+                id="education_end"
+                name="education_end"
+                placeholder=""
+            >
+
+
+
+            <!-- ========================= -->
+            <!-- PROJECTS -->
+            <!-- ========================= -->
+
+            <h2>Projects</h2>
+
+
+            <p>
+                Provide detailed information about your projects.
+                Include technologies, frameworks, datasets, algorithms,
+                models, preprocessing, implementation details,
+                deployment and results.
+            </p>
+
+
+            <!-- ========================= -->
+            <!-- PROJECT 1 -->
+            <!-- ========================= -->
+
+            <div class="project-box">
+
+                <h3>Project 1</h3>
+
+
+                <label for="project1_title">
+                    Project Title
+                </label>
+
+                <input
+                    type="text"
+                    id="project1_title"
+                    name="project1_title"
+                    placeholder=""
+                    required
+                >
+
+
+                <label for="project1_technologies">
+                    Technologies / Tools
+                </label>
+
+                <input
+                    type="text"
+                    id="project1_technologies"
+                    name="project1_technologies"
+                    placeholder=""
+                >
+
+
+                <label for="project1">
+                    Detailed Project Description
+                </label>
+
+                <textarea
+                    id="project1"
+                    name="project1"
+                    rows="12"
+                    placeholder=""
+                    required
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- PROJECT 2 -->
+            <!-- ========================= -->
+
+            <div class="project-box">
+
+                <h3>Project 2</h3>
+
+
+                <label for="project2_title">
+                    Project Title
+                </label>
+
+                <input
+                    type="text"
+                    id="project2_title"
+                    name="project2_title"
+                    placeholder=""
+                >
+
+
+                <label for="project2_technologies">
+                    Technologies / Tools
+                </label>
+
+                <input
+                    type="text"
+                    id="project2_technologies"
+                    name="project2_technologies"
+                    placeholder=""
+                >
+
+
+                <label for="project2">
+                    Detailed Project Description
+                </label>
+
+                <textarea
+                    id="project2"
+                    name="project2"
+                    rows="12"
+                    placeholder=""
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- TECHNICAL SKILLS -->
+            <!-- ========================= -->
+
+            <h2>Technical Skills</h2>
+
+
+            <label for="programming_languages">
+                Programming Languages
+            </label>
+
+            <input
+                type="text"
+                id="programming_languages"
+                name="programming_languages"
+                placeholder=""
+            >
+
+
+            <label for="other_skills">
+                Other Skills
+            </label>
+
+            <textarea
+                id="other_skills"
+                name="other_skills"
+                rows="5"
+                placeholder=""
+            ></textarea>
+
+
+            <p>
+                Include frameworks, libraries, databases, machine learning
+                tools, core computer science subjects, cloud platforms,
+                development tools and other relevant technical skills.
+            </p>
+
+
+
+            <!-- ========================= -->
+            <!-- EXPERIENCE & INTERESTS -->
+            <!-- ========================= -->
+
+            <h2>Experience &amp; Interests</h2>
+
+
+            <label for="experience">
+                Experience / Interests
+            </label>
+
+            <textarea
+                id="experience"
+                name="experience"
+                rows="8"
+                placeholder=""
+            ></textarea>
+
+
+
+            <!-- ========================= -->
+            <!-- CERTIFICATIONS -->
+            <!-- ========================= -->
+
+            <h2>Certifications</h2>
+
+
+            <label for="certifications">
+                Certifications
+            </label>
+
+            <textarea
+                id="certifications"
+                name="certifications"
+                rows="5"
+                placeholder=""
+            ></textarea>
+
+
+            <p>
+                Enter each certification on a separate line.
+            </p>
+
+
+
+            <!-- ========================= -->
+            <!-- TARGET ROLE -->
+            <!-- ========================= -->
+
+            <h2>Target Career Role</h2>
+
+
+            <label for="role">
+                Select Target Role
+            </label>
+
+
+            <select
+                id="role"
+                name="role"
+                required
+            >
+                {% for category, roles in role_categories.items() %}
+                <optgroup label="{{ category }}">
+                    {% for role in roles %}
+                    <option value="{{ role }}">{{ role }}</option>
+                    {% endfor %}
+                </optgroup>
+                {% endfor %}
+            </select>
+
+
+
+            <!-- ========================= -->
+            <!-- ACTION BUTTONS -->
+            <!-- ========================= -->
+
+            <div class="resume-actions">
+
+                <button
+                    type="submit"
+                    formaction="/preview_resume"
+                    formtarget="_blank"
+                    class="preview-button"
+                >
+                    Preview Resume
+                </button>
+
+
+                <button
+                    type="submit"
+                    formaction="/generate_resume"
+                    class="generate-button"
+                >
+                    Generate PDF
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+</body>
+
+</html>

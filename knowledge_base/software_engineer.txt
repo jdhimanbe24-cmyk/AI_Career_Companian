@@ -1,0 +1,168 @@
+ROLE: Software Engineer
+
+ROLE DESCRIPTION:
+A Software Engineer designs, develops, tests, maintains and deploys
+software applications and systems. Software Engineers work with
+programming languages, data structures, algorithms, databases,
+APIs and software development tools.
+
+EDUCATION:
+Typical candidates have a degree in Computer Science, Computer
+Engineering, Information Technology, Software Engineering or a
+related technical field.
+
+CORE SKILLS:
+Programming
+Data Structures
+Algorithms
+Object-Oriented Programming
+Problem Solving
+C++
+Java
+Python
+JavaScript
+SQL
+Git
+Debugging
+Software Testing
+
+SOFTWARE DEVELOPMENT SKILLS:
+Object-Oriented Design
+Design Patterns
+Operating Systems
+Computer Networks
+Database Management
+System Design
+REST APIs
+API Development
+Unit Testing
+Integration Testing
+Version Control
+Agile Development
+
+BACKEND SKILLS:
+Node.js
+Express.js
+Django
+Flask
+FastAPI
+Spring Boot
+REST API
+Microservices
+Authentication
+Authorization
+API Security
+
+DATABASE SKILLS:
+SQL
+MySQL
+PostgreSQL
+MongoDB
+Redis
+Database Design
+Database Normalization
+Query Optimization
+
+FRONTEND SKILLS:
+HTML
+CSS
+JavaScript
+React
+Responsive Design
+Web APIs
+
+DEPLOYMENT AND DEVOPS SKILLS:
+Docker
+AWS
+CI/CD
+Linux
+GitHub Actions
+Cloud Computing
+Kubernetes
+Monitoring
+Application Deployment
+
+PROJECT EXPECTATIONS:
+Candidates should ideally have 2 or more relevant technical projects.
+
+Relevant projects include:
+Full-stack applications
+Backend applications
+Web applications
+Mobile applications
+REST API projects
+Database-driven applications
+Cloud applications
+Distributed systems
+Automation tools
+Software engineering projects
+
+PROJECT QUALITY:
+Projects should explain the problem solved, technologies used,
+candidate's contribution, architecture, implementation details,
+testing approach and measurable results where possible.
+
+CERTIFICATIONS:
+Relevant certifications in:
+Software Development
+Cloud Computing
+AWS
+Azure
+Java
+Python
+Database Management
+DevOps
+Cybersecurity
+
+Certifications are beneficial but are not always mandatory.
+
+EXPERIENCE:
+Internships, freelance development, open-source contributions,
+research experience or relevant industry experience are beneficial.
+
+ENTRY LEVEL:
+For entry-level candidates, strong software projects,
+data structures and algorithms knowledge, programming skills and
+problem-solving ability can partially compensate for lack of
+professional experience.
+
+RESUME EXPECTATIONS:
+Resume should contain:
+Contact Information
+Professional Summary
+Education
+Technical Skills
+Projects
+Experience
+Certifications
+Achievements
+
+ATS KEYWORDS:
+C++
+Java
+Python
+JavaScript
+Data Structures
+Algorithms
+OOP
+SQL
+Git
+REST API
+Backend
+Frontend
+React
+Node.js
+Django
+Flask
+FastAPI
+Spring Boot
+MySQL
+PostgreSQL
+MongoDB
+Docker
+AWS
+Linux
+CI/CD
+Microservices
+Software Testing
+System Design

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Companies - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies" class="active">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="page-shell">
+
+    <div class="data-toolbar">
+        <div>
+            <span class="eyebrow">HIRING PARTNERS</span>
+            <h1 style="margin:0;">Manage Companies</h1>
+        </div>
+        <a href="/admin/company/add"><button type="button">+ Add Company</button></a>
+    </div>
+
+    {% if companies %}
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Website</th>
+                        <th>Open Jobs</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for company in companies %}
+
+                    <tr>
+                        <td>
+                            <div class="cell-title">{{ company.name }}</div>
+                            {% if company.description %}
+                                <div class="cell-sub">{{ company.description[:70] }}{% if company.description|length > 70 %}…{% endif %}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if company.website %}
+                                <a href="{{ company.website }}" target="_blank" rel="noopener">{{ company.website }}</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td><span class="badge status-under-review">{{ company.jobs_count }}</span></td>
+                        <td>
+                            <div class="manage-jobs-buttons">
+                                <a href="/admin/company/edit/{{ company.id }}">
+                                    <button type="button" class="btn-sm btn-outline">Edit</button>
+                                </a>
+
+                                <form method="POST"
+                                    action="/admin/company/delete/{{ company.id }}"
+                                    onsubmit="return confirm('Delete this company? Jobs linked to it may be affected.');">
+                                    <button type="submit" class="btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h3>No Companies Yet</h3>
+            <p>Add your first hiring partner to start posting jobs.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

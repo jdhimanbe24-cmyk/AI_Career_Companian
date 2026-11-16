@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Company - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies" class="active">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <h1>Edit Company</h1>
+    <p>Update this hiring partner's details.</p>
+
+    <form method="POST" action="/admin/company/edit/{{ company.id }}">
+
+        <label>Company Name</label>
+        <input type="text"
+               name="name"
+               value="{{ company.name }}"
+               required>
+
+        <label>Company Description</label>
+        <textarea name="description">{{ company.description or '' }}</textarea>
+
+        <label>Company Website</label>
+        <input type="url"
+               name="website"
+               value="{{ company.website or '' }}"
+               placeholder="https://example.com">
+
+        <button type="submit">
+            Update Company
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

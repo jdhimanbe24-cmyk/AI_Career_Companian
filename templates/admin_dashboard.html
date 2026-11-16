@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard" class="active">Dashboard</a>
+        <a href="/admin/companies">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="page-shell">
+
+    <div class="dash-banner">
+        <span class="tag">PLACEMENT ADMINISTRATION</span>
+        <h1>Admin Control Center</h1>
+        <p>
+            Manage partner companies, publish job openings, and track
+            every student application from one place.
+        </p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-tile">
+            <div class="stat-label">Companies</div>
+            <div class="stat-value accent">{{ companies_count }}</div>
+        </div>
+        <div class="stat-tile">
+            <div class="stat-label">Open Jobs</div>
+            <div class="stat-value">{{ jobs_count }}</div>
+        </div>
+        <div class="stat-tile">
+            <div class="stat-label">Total Applications</div>
+            <div class="stat-value">{{ applications_count }}</div>
+        </div>
+        <div class="stat-tile">
+            <div class="stat-label">Awaiting Review</div>
+            <div class="stat-value">{{ pending_review_count }}</div>
+        </div>
+    </div>
+
+    <h2 class="section-heading">Manage</h2>
+
+    <div class="action-grid">
+
+        <a class="action-tile" href="/admin/company/add">
+            <div class="action-icon">🏢</div>
+            <h3>Add Company</h3>
+            <p>Register a new hiring partner on the platform.</p>
+        </a>
+
+        <a class="action-tile" href="/admin/companies">
+            <div class="action-icon">📇</div>
+            <h3>Manage Companies</h3>
+            <p>Edit details or remove companies you no longer work with.</p>
+        </a>
+
+        <a class="action-tile" href="/admin/job/add">
+            <div class="action-icon">➕</div>
+            <h3>Post a Job</h3>
+            <p>Create a new opening under one of your companies.</p>
+        </a>
+
+        <a class="action-tile" href="/admin/jobs">
+            <div class="action-icon">📋</div>
+            <h3>Manage Jobs</h3>
+            <p>Edit requirements, deadlines, or delete stale postings.</p>
+        </a>
+
+        <a class="action-tile" href="/admin/applications">
+            <div class="action-icon">📥</div>
+            <h3>Review Applications</h3>
+            <p>Move students through Applied → Interview → Hired.</p>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

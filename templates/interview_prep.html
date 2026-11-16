@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Prep - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep" class="active">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar narrow">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <span class="current">Interview Prep</span>
+    </div>
+</div>
+
+
+<div class="form-container">
+
+    <h1>AI Interview Prep</h1>
+
+    <p>
+        Pick your target role and get a fresh set of realistic interview
+        questions, generated for that role, with tips on how to structure
+        a strong answer to each one.
+    </p>
+
+    <form action="/interview-prep/generate" method="POST">
+
+        <label>Target Career Role</label>
+
+        <select name="role" required>
+            {% for category, roles in role_categories.items() %}
+            <optgroup label="{{ category }}">
+                {% for role in roles %}
+                <option value="{{ role }}">{{ role }}</option>
+                {% endfor %}
+            </optgroup>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Generate Questions</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

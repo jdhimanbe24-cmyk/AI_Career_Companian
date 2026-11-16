@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Company - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies" class="active">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <h1>Add Company</h1>
+    <p>Register a new hiring partner so you can post jobs under it.</p>
+
+    <form method="POST" action="/admin/company/add">
+
+        <label>Company Name</label>
+        <input type="text"
+               name="name"
+               placeholder="e.g. Microsoft"
+               required>
+
+        <label>Company Description</label>
+        <textarea name="description"
+                  placeholder="Brief description of the company"></textarea>
+
+        <label>Company Website</label>
+        <input type="url"
+               name="website"
+               placeholder="https://example.com">
+
+        <button type="submit">
+            Add Company
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

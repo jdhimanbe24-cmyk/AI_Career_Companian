@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Application Questionnaire</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar app">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <a href="/jobs">Browse Jobs</a>
+        <span class="sep">/</span>
+        <a href="/job/{{ job.id }}">{{ job.title }}</a>
+        <span class="sep">/</span>
+        <span class="current">Apply</span>
+    </div>
+</div>
+
+
+
+<div class="application-page">
+
+    <!-- HEADER -->
+
+    <div class="application-header">
+
+        <span class="application-badge">
+            JOB APPLICATION
+        </span>
+
+        <h1>Application Questionnaire</h1>
+
+        <p>
+            Complete the following information before submitting
+            your application for
+            <strong>{{ job.title }}</strong>
+            at
+            <strong>{{ job.company_name }}</strong>.
+        </p>
+
+        <div class="progress-info">
+            Application Information
+        </div>
+
+    </div>
+
+
+    <form method="POST"
+          action="/job/{{ job.id }}/apply">
+
+
+        <!-- ================================= -->
+        <!-- ELIGIBILITY & SUPPORT -->
+        <!-- ================================= -->
+
+        <div class="question-card">
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <div>
+                    <h2>Eligibility & Support</h2>
+
+                    <p>
+                        This information helps recruiters understand
+                        candidate requirements and support needs.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- PWD -->
+
+            <div class="question">
+
+                <label class="question-title">
+                    Do you identify as a Person with Disability (PwD)?
+                </label>
+
+                <p class="question-help">
+                    This information is optional and is collected
+                    only for recruitment and support purposes.
+                </p>
+
+
+                <div class="radio-options">
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="pwd_status"
+                               value="Yes">
+
+                        <span>Yes</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="pwd_status"
+                               value="No">
+
+                        <span>No</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="pwd_status"
+                               value="Prefer not to say">
+
+                        <span>Prefer not to say</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESIDENCY -->
+
+            <div class="question">
+
+                <label class="question-title">
+                    What is your current residency status?
+                </label>
+
+
+                <div class="radio-options">
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="indian_resident_status"
+                               value="Indian Resident"
+                               required>
+
+                        <span>Indian Resident</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="indian_resident_status"
+                               value="Non-Resident">
+
+                        <span>Non-Resident</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="indian_resident_status"
+                               value="Immigrant / Foreign National">
+
+                        <span>Immigrant / Foreign National</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="indian_resident_status"
+                               value="Prefer not to say">
+
+                        <span>Prefer not to say</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================= -->
+        <!-- LANGUAGE SKILLS -->
+        <!-- ================================= -->
+
+        <div class="question-card">
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    02
+                </div>
+
+                <div>
+                    <h2>Language & Technical Skills</h2>
+
+                    <p>
+                        Tell the recruiter about your programming
+                        and technical language skills.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- NUMBER -->
+
+            <div class="question">
+
+                <label class="question-title"
+                       for="language_count">
+
+                    How many programming or technical languages
+                    do you know?
+
+                </label>
+
+                <input
+                    type="number"
+                    id="language_count"
+                    name="language_count"
+                    min="0"
+                    max="50"
+                    placeholder="Example: 4"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- SPOKEN LANGUAGE SKILLS -->
+            <!-- ================================= -->
+
+            <div class="question-card">
+
+                <div class="section-title">
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                    <div>
+                        <h2>Language Skills</h2>
+
+                        <p>
+                            Select the languages you know and specify your
+                            proficiency level.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div id="languages-container">
+
+                    <!-- First language -->
+
+                    <div class="language-row">
+
+                        <div class="language-select">
+
+                            <label class="question-title">
+                                Language
+                            </label>
+
+                            <select
+                                name="languages[]"
+                                class="language-dropdown"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a language
+                                </option>
+
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Punjabi">Punjabi</option>
+                                <option value="Bengali">Bengali</option>
+                                <option value="Gujarati">Gujarati</option>
+                                <option value="Marathi">Marathi</option>
+                                <option value="Tamil">Tamil</option>
+                                <option value="Telugu">Telugu</option>
+                                <option value="Kannada">Kannada</option>
+                                <option value="Malayalam">Malayalam</option>
+                                <option value="Urdu">Urdu</option>
+                                <option value="French">French</option>
+                                <option value="German">German</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Mandarin">Mandarin</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Other">Other</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="proficiency-section">
+
+                            <label class="question-title">
+                                Proficiency
+                            </label>
+
+                            <div class="proficiency-options">
+
+                                <label class="proficiency-option">
+
+                                    <input
+                                        type="radio"
+                                        name="proficiency_0"
+                                        value="Basic"
+                                        required
+                                    >
+
+                                    <span>Basic</span>
+
+                                </label>
+
+
+                                <label class="proficiency-option">
+
+                                    <input
+                                        type="radio"
+                                        name="proficiency_0"
+                                        value="Intermediate"
+                                    >
+
+                                    <span>Intermediate</span>
+
+                                </label>
+
+
+                                <label class="proficiency-option">
+
+                                    <input
+                                        type="radio"
+                                        name="proficiency_0"
+                                        value="Advanced"
+                                    >
+
+                                    <span>Advanced</span>
+
+                                </label>
+
+
+                                <label class="proficiency-option">
+
+                                    <input
+                                        type="radio"
+                                        name="proficiency_0"
+                                        value="Fluent"
+                                    >
+
+                                    <span>Fluent</span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="add-language-button"
+                    onclick="addLanguage()"
+                >
+
+                    + Add Another Language
+
+                </button>
+
+            </div>
+
+
+
+        <!-- ================================= -->
+        <!-- COMPANY CONNECTION -->
+        <!-- ================================= -->
+
+        <div class="question-card">
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    03
+                </div>
+
+                <div>
+                    <h2>Company Connection</h2>
+
+                    <p>
+                        Tell us if you already have a professional
+                        connection with the company.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <label class="question-title">
+
+                    Do you already know someone who works at
+                    {{ job.company_name }}?
+
+                </label>
+
+
+                <div class="radio-options">
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="known_in_company"
+                               value="Yes"
+                               required>
+
+                        <span>Yes</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="known_in_company"
+                               value="No">
+
+                        <span>No</span>
+
+                    </label>
+
+
+                    <label class="radio-option">
+
+                        <input type="radio"
+                               name="known_in_company"
+                               value="Prefer not to say">
+
+                        <span>Prefer not to say</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <label class="question-title"
+                       for="known_person_details">
+
+                    If yes, describe your connection
+                    <span class="optional">(Optional)</span>
+
+                </label>
+
+                <textarea
+                    id="known_person_details"
+                    name="known_person_details"
+                    placeholder="Example: College senior, former colleague, professional contact"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================= -->
+        <!-- PERMISSION & CONSENT -->
+        <!-- ================================= -->
+
+        <div class="question-card consent-card">
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    04
+                </div>
+
+                <div>
+                    <h2>Permission & Consent</h2>
+
+                    <p>
+                        Please review the permissions before
+                        submitting your application.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- APPLICATION CONSENT -->
+
+            <label class="consent-option">
+
+                <input
+                    type="checkbox"
+                    name="application_consent"
+                    value="yes"
+                    required
+                >
+
+                <span class="consent-text">
+
+                    <strong>
+                        Application information consent
+                    </strong>
+
+                    <br>
+
+                    I confirm that the information provided in this
+                    questionnaire is accurate to the best of my
+                    knowledge, and I give permission for it to be
+                    used for processing my application and evaluating
+                    my suitability for this job.
+
+                </span>
+
+            </label>
+
+
+            <!-- RESUME CONSENT -->
+
+            <label class="consent-option">
+
+                <input
+                    type="checkbox"
+                    name="resume_consent"
+                    value="yes"
+                    required
+                >
+
+                <span class="consent-text">
+
+                    <strong>
+                        Resume usage consent
+                    </strong>
+
+                    <br>
+
+                    I give permission to use the resume stored in my
+                    student profile for this job application,
+                    including resume analysis and comparison with
+                    the job requirements.
+
+                </span>
+
+            </label>
+
+        </div>
+
+
+
+        <!-- ================================= -->
+        <!-- SUBMIT -->
+        <!-- ================================= -->
+
+        <div class="submit-section">
+
+            <a href="/job/{{ job.id }}"
+               class="back-button">
+
+                ← Back to Job
+
+            </a>
+
+
+            <button type="submit"
+                    class="submit-application">
+
+                Submit Application
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+<script>
+
+let languageIndex = 1;
+
+
+function addLanguage() {
+
+    const container =
+        document.getElementById("languages-container");
+
+
+    const row =
+        document.createElement("div");
+
+    row.className = "language-row";
+
+
+    row.innerHTML = `
+
+        <div class="language-select">
+
+            <label class="question-title">
+                Language
+            </label>
+
+            <select
+                name="languages[]"
+                class="language-dropdown"
+                required
+            >
+
+                <option value="">
+                    Select a language
+                </option>
+
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Punjabi">Punjabi</option>
+                <option value="Bengali">Bengali</option>
+                <option value="Gujarati">Gujarati</option>
+                <option value="Marathi">Marathi</option>
+                <option value="Tamil">Tamil</option>
+                <option value="Telugu">Telugu</option>
+                <option value="Kannada">Kannada</option>
+                <option value="Malayalam">Malayalam</option>
+                <option value="Urdu">Urdu</option>
+                <option value="French">French</option>
+                <option value="German">German</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Mandarin">Mandarin</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Other">Other</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="proficiency-section">
+
+            <label class="question-title">
+                Proficiency
+            </label>
+
+            <div class="proficiency-options">
+
+                <label class="proficiency-option">
+
+                    <input
+                        type="radio"
+                        name="proficiency_${languageIndex}"
+                        value="Basic"
+                        required
+                    >
+
+                    <span>Basic</span>
+
+                </label>
+
+
+                <label class="proficiency-option">
+
+                    <input
+                        type="radio"
+                        name="proficiency_${languageIndex}"
+                        value="Intermediate"
+                    >
+
+                    <span>Intermediate</span>
+
+                </label>
+
+
+                <label class="proficiency-option">
+
+                    <input
+                        type="radio"
+                        name="proficiency_${languageIndex}"
+                        value="Advanced"
+                    >
+
+                    <span>Advanced</span>
+
+                </label>
+
+
+                <label class="proficiency-option">
+
+                    <input
+                        type="radio"
+                        name="proficiency_${languageIndex}"
+                        value="Fluent"
+                    >
+
+                    <span>Fluent</span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="remove-language-button"
+            onclick="this.parentElement.remove()"
+        >
+
+            Remove
+
+        </button>
+
+    `;
+
+
+    container.appendChild(row);
+
+    languageIndex++;
+
+}
+
+</script>
+
+</body>
+
+</html>

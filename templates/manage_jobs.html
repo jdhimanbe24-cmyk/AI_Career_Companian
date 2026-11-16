@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Jobs - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies">Companies</a>
+        <a href="/admin/jobs" class="active">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="page-shell">
+
+    <div class="data-toolbar">
+        <div>
+            <span class="eyebrow">JOB POSTINGS</span>
+            <h1 style="margin:0;">Manage Jobs</h1>
+        </div>
+        <a href="/admin/job/add"><button type="button">+ Add Job</button></a>
+    </div>
+
+    {% if jobs %}
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Job</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>CTC / Stipend</th>
+                        <th>Deadline</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for job in jobs %}
+
+                    <tr>
+                        <td class="cell-title">{{ job.title }}</td>
+                        <td>{{ job.company_name }}</td>
+                        <td>{{ job.location or "—" }}</td>
+                        <td>{{ job.job_type or "—" }}</td>
+                        <td>{{ job.ctc or job.stipend or "Not disclosed" }}</td>
+                        <td>{{ job.deadline or "Open" }}</td>
+                        <td>
+                            <div class="manage-jobs-buttons">
+                                <a href="/admin/job/edit/{{ job.id }}">
+                                    <button type="button" class="btn-sm btn-outline">Edit</button>
+                                </a>
+
+                                <form method="POST"
+                                    action="/admin/job/delete/{{ job.id }}"
+                                    onsubmit="return confirm('Are you sure you want to delete this job?');">
+                                    <button type="submit" class="btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h3>No Jobs Yet</h3>
+            <p>Post your first job opening to get started.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard" class="active">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="page-shell">
+
+    <div class="dash-banner">
+        <span class="tag">STUDENT PORTAL</span>
+        <h1>Welcome back{{ ', ' + student.name if student and student.name else '' }}</h1>
+        <p>
+            Here's where things stand with your career prep and
+            your job applications.
+        </p>
+    </div>
+
+    {% if profile_percent < 100 %}
+    <a class="profile-nudge" href="/student/profile">
+        <span class="profile-nudge-icon">👤</span>
+        <span class="profile-nudge-text">
+            <strong>Your profile is {{ profile_percent }}% complete.</strong>
+            Finish it up so job matching and your generated resume are accurate.
+        </span>
+        <span class="profile-nudge-cta">Complete Profile →</span>
+    </a>
+    {% endif %}
+
+    <div class="stats-row">
+        <div class="stat-tile">
+            <div class="stat-label">Profile Completeness</div>
+            <div class="stat-value accent">{{ profile_percent }}%</div>
+        </div>
+        <div class="stat-tile">
+            <div class="stat-label">Resume on File</div>
+            <div class="stat-value">{{ "Uploaded" if resume_uploaded else "Not yet" }}</div>
+        </div>
+        <div class="stat-tile">
+            <div class="stat-label">Applications Sent</div>
+            <div class="stat-value">{{ applications_count }}</div>
+        </div>
+    </div>
+
+    <div class="dash-columns">
+
+        <div class="dash-panel">
+            <div class="dash-panel-head">
+                <h2 class="section-heading">Recent Applications</h2>
+                <a class="dash-panel-link" href="/student/applications">View all →</a>
+            </div>
+
+            {% if recent_applications %}
+                {% for application in recent_applications %}
+                <a class="dash-list-item" href="/job/{{ application.job_id }}">
+                    <span class="dash-list-main">
+                        <span class="dash-list-title">{{ application.job_title }}</span>
+                        <span class="dash-list-sub">{{ application.company_name }}</span>
+                    </span>
+                    {% if application.status == "Rejected" %}
+                        <span class="status status-rejected">Rejected</span>
+                    {% elif application.status in ["Selected", "Hired"] %}
+                        <span class="status status-selected">{{ application.status }}</span>
+                    {% elif application.status == "Interview" %}
+                        <span class="status status-interview">Interview</span>
+                    {% elif application.status == "Shortlisted" %}
+                        <span class="status status-shortlisted">Shortlisted</span>
+                    {% elif application.status == "Under Review" %}
+                        <span class="status status-under-review">Under Review</span>
+                    {% else %}
+                        <span class="status status-applied">Applied</span>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            {% else %}
+                <p class="empty-note">
+                    You haven't applied to anything yet.
+                    <a href="/jobs">Browse open roles →</a>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="dash-panel">
+            <div class="dash-panel-head">
+                <h2 class="section-heading">Latest Openings</h2>
+                <a class="dash-panel-link" href="/jobs">View all →</a>
+            </div>
+
+            {% if latest_jobs %}
+                {% for job in latest_jobs %}
+                <a class="dash-list-item" href="/job/{{ job.id }}">
+                    <span class="dash-list-main">
+                        <span class="dash-list-title">{{ job.title }}</span>
+                        <span class="dash-list-sub">{{ job.company_name }}{{ ' · ' + job.location if job.location else '' }}</span>
+                    </span>
+                    <span class="dash-list-tag">{{ job.job_type or "Open" }}</span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <p class="empty-note">No openings posted yet. Check back soon.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="action-group">
+        <h2 class="section-heading">Prepare</h2>
+        <div class="action-grid">
+
+            <a class="action-tile" href="/analyzer">
+                <div class="action-icon">📊</div>
+                <h3>Resume Analyzer</h3>
+                <p>Check your match score against a specific job role.</p>
+            </a>
+
+            <a class="action-tile" href="/generator">
+                <div class="action-icon">📝</div>
+                <h3>Resume Generator</h3>
+                <p>Build a polished, one-page resume from your profile.</p>
+            </a>
+
+            <a class="action-tile" href="/interview-prep">
+                <div class="action-icon">🎤</div>
+                <h3>Interview Prep</h3>
+                <p>Get AI-generated interview questions for your target role.</p>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="action-group">
+        <h2 class="section-heading">Apply &amp; Track</h2>
+        <div class="action-grid">
+
+            <a class="action-tile" href="/jobs">
+                <div class="action-icon">🧭</div>
+                <h3>Browse Jobs</h3>
+                <p>Explore live openings posted by partner companies.</p>
+            </a>
+
+            <a class="action-tile" href="/student/applications">
+                <div class="action-icon">📌</div>
+                <h3>My Applications</h3>
+                <p>Track the status of every job you've applied to.</p>
+            </a>
+
+            <a class="action-tile" href="/student/profile">
+                <div class="action-icon">👤</div>
+                <h3>My Profile</h3>
+                <p>Update your education, skills and uploaded resume.</p>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

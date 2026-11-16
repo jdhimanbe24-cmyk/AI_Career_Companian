@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Score - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep" class="active">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar medium">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <a href="/interview-prep">Interview Prep</a>
+        <span class="sep">/</span>
+        <span class="current">Score</span>
+    </div>
+</div>
+
+<div class="analysis-container">
+
+    <h1>Mock Interview Results</h1>
+    <h2>Target Role: {{ role }}</h2>
+
+    <div class="overall-score">
+        <h3>Overall Interview Score</h3>
+        <div class="score-number">{{ result.overall_score }}/100</div>
+        <p>{{ result.summary }}</p>
+    </div>
+
+    <div class="interview-feedback-columns">
+
+        <div class="interview-feedback-panel">
+            <h3>Strengths</h3>
+            <ul>
+                {% for item in result.strengths %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="interview-feedback-panel">
+            <h3>Areas to Improve</h3>
+            <ul>
+                {% for item in result.areas_to_improve %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+    <h2 class="section-heading">Question-by-Question Breakdown</h2>
+
+    <div class="interview-questions">
+        {% for item in result.per_question %}
+        <div class="interview-card">
+            <span class="interview-score-chip">{{ item.score }}/10</span>
+            <h3>{{ item.question }}</h3>
+            <p>{{ item.feedback }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="interview-prep-actions">
+        <a class="btn" href="/interview-prep">Try Another Role</a>
+    </div>
+
+</div>
+
+</body>
+</html>

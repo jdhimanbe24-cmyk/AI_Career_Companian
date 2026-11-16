@@ -1,0 +1,113 @@
+ROLE: AI/ML Engineer
+
+ROLE DESCRIPTION:
+An AI/ML Engineer develops, trains, evaluates and deploys machine
+learning and artificial intelligence systems.
+
+EDUCATION:
+Typical candidates have a degree in Computer Science, Computer
+Engineering, Information Technology, Data Science, Artificial
+Intelligence or a related technical field.
+
+CORE SKILLS:
+Python
+Machine Learning
+Deep Learning
+Statistics
+Pandas
+NumPy
+Scikit-learn
+SQL
+Git
+
+ADVANCED AI SKILLS:
+TensorFlow
+PyTorch
+Neural Networks
+CNN
+RNN
+LSTM
+Transformers
+Natural Language Processing
+Computer Vision
+Generative AI
+Large Language Models
+RAG
+AI Agents
+
+DEPLOYMENT SKILLS:
+Docker
+FastAPI
+REST API
+AWS
+MLOps
+Model Deployment
+
+PROJECT EXPECTATIONS:
+Candidates should ideally have 2 or more relevant technical projects.
+
+Relevant projects include:
+Machine Learning applications
+Deep Learning applications
+NLP applications
+Computer Vision applications
+RAG applications
+AI chatbot applications
+AI agent applications
+Model deployment projects
+
+PROJECT QUALITY:
+Projects should explain the problem solved, technologies used,
+candidate's contribution, implementation details and measurable
+results where possible.
+
+CERTIFICATIONS:
+Relevant certifications in:
+Machine Learning
+Artificial Intelligence
+Deep Learning
+Cloud Computing
+Data Science
+Python
+
+Certifications are beneficial but are not always mandatory.
+
+EXPERIENCE:
+Internships, research experience, freelance projects or relevant
+industry experience are beneficial.
+
+ENTRY LEVEL:
+For entry-level candidates, strong projects can partially
+compensate for lack of professional experience.
+
+RESUME EXPECTATIONS:
+Resume should contain:
+Contact Information
+Professional Summary
+Education
+Technical Skills
+Projects
+Experience
+Certifications
+Achievements
+
+ATS KEYWORDS:
+Python
+Machine Learning
+Deep Learning
+TensorFlow
+PyTorch
+Scikit-learn
+Pandas
+NumPy
+SQL
+Docker
+FastAPI
+AWS
+MLOps
+NLP
+Computer Vision
+Generative AI
+LLM
+RAG
+AI Agents

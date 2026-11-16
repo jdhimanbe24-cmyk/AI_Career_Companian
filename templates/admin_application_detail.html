@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Detail - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications" class="active">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="analysis-container">
+
+    <div class="analysis-section">
+
+        <span class="application-badge">
+            APP-{{ "%06d"|format(application.id) }}
+        </span>
+
+        <h1 style="margin-top:14px;">{{ application.job_title }}</h1>
+        <h2 style="color: var(--accent-dark); font-size: 17px;">{{ application.company_name }}</h2>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <div class="label">Student</div>
+                <div class="value">{{ application.student_name }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">Roll No.</div>
+                <div class="value">{{ application.roll_no or "—" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">College</div>
+                <div class="value">{{ application.college or "—" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">Branch</div>
+                <div class="value">{{ application.branch or "—" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">CGPA</div>
+                <div class="value">{{ application.cgpa or "—" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">Current Status</div>
+                <div class="value">{{ application.status }}</div>
+            </div>
+        </div>
+
+        <h3>Skills</h3>
+        <p>{{ application.skills or "Not specified" }}</p>
+
+        <h3>Languages Known</h3>
+        <p>{{ application.languages_known or "Not specified" }}</p>
+
+        <h3>Known Someone at the Company?</h3>
+        <p>
+            {{ application.known_in_company or "Not specified" }}
+            {% if application.known_person_details %} — {{ application.known_person_details }}{% endif %}
+        </p>
+
+        <h3>Resume</h3>
+        {% if application.resume_consent %}
+            <a href="/admin/application/resume/{{ application.id }}" target="_blank">
+                <button type="button" class="btn-sm">View Submitted Resume</button>
+            </a>
+        {% else %}
+            <p class="hint">The student did not give resume-sharing consent for this application.</p>
+        {% endif %}
+
+        <h3>Update Status</h3>
+        <form method="POST"
+              action="/admin/application/status/{{ application.id }}"
+              style="max-width: 320px;">
+            <input type="hidden" name="next" value="/admin/application/{{ application.id }}">
+            <select name="status" class="status-select" style="width:100%; margin-bottom: 12px;">
+                {% for option in ["Applied", "Under Review", "Shortlisted", "Interview", "Selected", "Rejected"] %}
+                    <option value="{{ option }}" {% if application.status == option %}selected{% endif %}>
+                        {{ option }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Save Status</button>
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

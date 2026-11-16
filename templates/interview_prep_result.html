@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interview - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep" class="active">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar narrow">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <a href="/interview-prep">Interview Prep</a>
+        <span class="sep">/</span>
+        <span class="current">Mock Interview</span>
+    </div>
+</div>
+
+<div class="form-container interview-session">
+
+    <div class="interview-progress">
+        <div class="interview-progress-label">
+            <span id="question-counter">Question 1 of {{ questions|length }}</span>
+            <span id="interview-role-tag">{{ role }}</span>
+        </div>
+        <div class="interview-progress-track">
+            <div class="interview-progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <span class="interview-category-badge" id="question-category">{{ questions[0].category if questions else "" }}</span>
+
+    <h2 id="question-text" class="interview-question-text"></h2>
+
+    <button type="button" class="hint-toggle" id="hint-toggle">Show hint</button>
+    <p class="field-hint" id="question-tip" hidden></p>
+
+    <label for="answer-box">Your answer</label>
+    <textarea id="answer-box" rows="6" placeholder="Type your answer here, or use the mic to speak it..."></textarea>
+
+    <div class="mic-row">
+        <button type="button" class="mic-button" id="mic-button">
+            <span id="mic-icon">🎤</span>
+            <span id="mic-label">Speak Answer</span>
+        </button>
+        <span class="mic-status" id="mic-status"></span>
+    </div>
+
+    <div class="interview-prep-actions">
+        <button type="button" class="btn" id="next-button">Next Question →</button>
+    </div>
+
+    <form id="evaluate-form" method="POST" action="/interview-prep/evaluate" hidden>
+        <input type="hidden" name="role" value="{{ role }}">
+        <input type="hidden" name="transcript" id="transcript-field">
+    </form>
+
+</div>
+
+<script>
+    const QUESTIONS = {{ questions|tojson }};
+    const answers = new Array(QUESTIONS.length).fill("");
+    let currentIndex = 0;
+
+    const counterEl = document.getElementById("question-counter");
+    const progressFill = document.getElementById("progress-fill");
+    const categoryEl = document.getElementById("question-category");
+    const questionTextEl = document.getElementById("question-text");
+    const hintToggle = document.getElementById("hint-toggle");
+    const tipEl = document.getElementById("question-tip");
+    const answerBox = document.getElementById("answer-box");
+    const nextButton = document.getElementById("next-button");
+    const micButton = document.getElementById("mic-button");
+    const micLabel = document.getElementById("mic-label");
+    const micStatus = document.getElementById("mic-status");
+
+    function renderQuestion() {
+        const q = QUESTIONS[currentIndex];
+
+        counterEl.textContent = `Question ${currentIndex + 1} of ${QUESTIONS.length}`;
+        progressFill.style.width = `${((currentIndex) / QUESTIONS.length) * 100}%`;
+
+        categoryEl.textContent = q.category || "";
+        questionTextEl.textContent = q.question || "";
+
+        tipEl.textContent = q.tip || "";
+        tipEl.hidden = true;
+        hintToggle.textContent = "Show hint";
+
+        answerBox.value = answers[currentIndex] || "";
+        answerBox.focus();
+
+        nextButton.textContent = (currentIndex === QUESTIONS.length - 1)
+            ? "Finish & Get My Score"
+            : "Next Question →";
+    }
+
+    hintToggle.addEventListener("click", () => {
+        tipEl.hidden = !tipEl.hidden;
+        hintToggle.textContent = tipEl.hidden ? "Show hint" : "Hide hint";
+    });
+
+    nextButton.addEventListener("click", () => {
+        answers[currentIndex] = answerBox.value;
+
+        if (currentIndex < QUESTIONS.length - 1) {
+            currentIndex += 1;
+            renderQuestion();
+        } else {
+            progressFill.style.width = "100%";
+            submitInterview();
+        }
+    });
+
+    function submitInterview() {
+        const transcript = QUESTIONS.map((q, i) => ({
+            category: q.category,
+            question: q.question,
+            answer: answers[i]
+        }));
+
+        document.getElementById("transcript-field").value = JSON.stringify(transcript);
+
+        nextButton.disabled = true;
+        nextButton.textContent = "Scoring your interview...";
+
+        document.getElementById("evaluate-form").submit();
+    }
+
+    // --- Speech recognition (speak-your-answer) ---
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isRecording = false;
+    let baseTextBeforeRecording = "";
+
+    if (SpeechRecognitionAPI) {
+        recognition = new SpeechRecognitionAPI();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
+
+        recognition.onresult = (event) => {
+            let finalTranscript = "";
+            let interimTranscript = "";
+
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcriptPiece = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcriptPiece + " ";
+                } else {
+                    interimTranscript += transcriptPiece;
+                }
+            }
+
+            if (finalTranscript) {
+                baseTextBeforeRecording = (baseTextBeforeRecording + " " + finalTranscript).trim();
+            }
+
+            answerBox.value = (baseTextBeforeRecording + " " + interimTranscript).trim();
+        };
+
+        recognition.onerror = (event) => {
+            micStatus.textContent = "Mic error: " + event.error + ". You can type your answer instead.";
+            stopRecording();
+        };
+
+        recognition.onend = () => {
+            if (isRecording) {
+                // Browser can end recognition on its own after a pause; restart if still "recording"
+                try {
+                    recognition.start();
+                } catch (e) {
+                    stopRecording();
+                }
+            }
+        };
+
+        micButton.addEventListener("click", () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+    } else {
+        micButton.disabled = true;
+        micLabel.textContent = "Mic not supported";
+        micStatus.textContent = "Speech input isn't supported in this browser (try Chrome). You can type your answer below instead.";
+    }
+
+    function startRecording() {
+        baseTextBeforeRecording = answerBox.value;
+        isRecording = true;
+        micButton.classList.add("recording");
+        micLabel.textContent = "Stop Recording";
+        micStatus.textContent = "Listening...";
+        try {
+            recognition.start();
+        } catch (e) {
+            // already started
+        }
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        micButton.classList.remove("recording");
+        micLabel.textContent = "Speak Answer";
+        micStatus.textContent = "";
+        try {
+            recognition.stop();
+        } catch (e) {
+            // ignore
+        }
+    }
+
+    renderQuestion();
+</script>
+
+</body>
+</html>

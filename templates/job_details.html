@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ job.title }} - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs" class="active">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar medium">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <a href="/jobs">Browse Jobs</a>
+        <span class="sep">/</span>
+        <span class="current">{{ job.title }}</span>
+    </div>
+</div>
+
+
+<div class="analysis-container">
+
+    <div class="analysis-section">
+
+        <span class="application-badge">{{ job.job_type or "OPENING" }}</span>
+
+        <h1 style="margin-top:14px;">{{ job.title }}</h1>
+        <h2 style="color: var(--accent-dark); font-size: 17px;">{{ job.company_name }}</h2>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <div class="label">Location</div>
+                <div class="value">{{ job.location or "Not specified" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">CTC</div>
+                <div class="value">{{ job.ctc or "Not disclosed" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">Stipend</div>
+                <div class="value">{{ job.stipend or "Not disclosed" }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="label">Deadline</div>
+                <div class="value">{{ job.deadline or "Not specified" }}</div>
+            </div>
+        </div>
+
+        <h3>Job Description</h3>
+        <p>{{ job.description or "Not specified" }}</p>
+
+        <h3>Education</h3>
+        <p>{{ job.education or "Not specified" }}</p>
+
+        <h3>Required Skills</h3>
+        <p>{{ job.required_skills or "Not specified" }}</p>
+
+        <h3>Recommended Qualities</h3>
+        <p>{{ job.recommended_qualities or "Not specified" }}</p>
+
+        <h3>Preferred Qualities</h3>
+        <p>{{ job.preferred_qualities or "Not specified" }}</p>
+
+        <h3>Experience</h3>
+        <p>{{ job.experience or "Not specified" }}</p>
+
+        <h3>Certifications</h3>
+        <p>{{ job.certifications or "Not specified" }}</p>
+
+        <br>
+
+        {% if already_applied %}
+
+            <button type="button" disabled>
+                ✓ Already Applied
+            </button>
+
+            <p>
+                You have already applied for this job. Track its progress
+                from <a href="/student/applications">My Applications</a>.
+            </p>
+
+        {% else %}
+
+            <a href="/job/{{ job.id }}/apply">
+                <button type="button">
+                    Apply Now
+                </button>
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

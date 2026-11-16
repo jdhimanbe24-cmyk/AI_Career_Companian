@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies">Companies</a>
+        <a href="/admin/jobs">Jobs</a>
+        <a href="/admin/applications" class="active">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="applications-container">
+
+    <div class="data-toolbar">
+        <div>
+            <span class="eyebrow">STUDENT APPLICATIONS</span>
+            <h1 style="margin:0;">Review Applications</h1>
+        </div>
+    </div>
+
+    <form class="filter-bar" method="GET" action="/admin/applications">
+
+        <div class="filter-field">
+            <label for="filter-company">Company</label>
+            <select id="filter-company" name="company_id">
+                <option value="">All Companies</option>
+                {% for company in filter_companies %}
+                    <option value="{{ company.id }}" {% if selected_company_id == company.id %}selected{% endif %}>
+                        {{ company.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="filter-job">Job Title</label>
+            <select id="filter-job" name="job_id">
+                <option value="">All Jobs</option>
+                {% set ns = namespace(current_company="") %}
+                {% for job in filter_jobs %}
+                    {% if job.company_name != ns.current_company %}
+                        {% if ns.current_company != "" %}</optgroup>{% endif %}
+                        <optgroup label="{{ job.company_name }}">
+                        {% set ns.current_company = job.company_name %}
+                    {% endif %}
+                    <option value="{{ job.id }}" {% if selected_job_id == job.id %}selected{% endif %}>
+                        {{ job.title }}
+                    </option>
+                {% endfor %}
+                {% if filter_jobs %}</optgroup>{% endif %}
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="filter-apply">Apply Filters</button>
+            {% if selected_company_id or selected_job_id %}
+                <a class="filter-clear" href="/admin/applications">Clear</a>
+            {% endif %}
+        </div>
+
+    </form>
+
+    {% if applications %}
+
+        <div class="applications-table-wrapper">
+
+            <table class="applications-table">
+
+                <thead>
+                    <tr>
+                        <th>Application No.</th>
+                        <th>Student Name</th>
+                        <th>University Roll No.</th>
+                        <th>Company</th>
+                        <th>Job Title</th>
+                        <th>Status</th>
+                        <th>Update Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for application in applications %}
+
+                    <tr>
+
+                        <td class="application-number">
+                            APP-{{ "%06d"|format(application.application_id) }}
+                        </td>
+
+                        <td>
+                            {{ application.student_name }}
+                        </td>
+
+                        <td>
+                            {{ application.roll_no or "—" }}
+                        </td>
+
+                        <td>
+                            {{ application.company_name }}
+                        </td>
+
+                        <td>
+                            {{ application.job_title }}
+                        </td>
+
+                        <td>
+
+                            {% if application.status == "Applied" %}
+                                <span class="status status-applied">Applied</span>
+                            {% elif application.status == "Shortlisted" %}
+                                <span class="status status-shortlisted">Shortlisted</span>
+                            {% elif application.status == "Under Review" %}
+                                <span class="status status-under-review">Under Review</span>
+                            {% elif application.status == "Interview" %}
+                                <span class="status status-interview">Interview</span>
+                            {% elif application.status in ["Selected", "Hired"] %}
+                                <span class="status status-selected">{{ application.status }}</span>
+                            {% elif application.status == "Rejected" %}
+                                <span class="status status-rejected">Rejected</span>
+                            {% else %}
+                                <span class="status">{{ application.status }}</span>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            <form method="POST"
+                                  action="/admin/application/status/{{ application.application_id }}">
+                                <input type="hidden" name="next" value="{{ request.path }}?page={{ page }}">
+                                <select name="status" class="status-select" onchange="this.form.submit()">
+                                    {% for option in ["Applied", "Under Review", "Shortlisted", "Interview", "Selected", "Rejected"] %}
+                                        <option value="{{ option }}" {% if application.status == option %}selected{% endif %}>
+                                            {{ option }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </td>
+
+                        <td>
+
+                            <a class="view-button"
+                               href="/admin/application/{{ application.application_id }}">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% if total_pages > 1 %}
+
+        <div class="pagination">
+
+            {% if page > 1 %}
+
+                <a href="{{ url_for('admin_applications', page=page-1, company_id=selected_company_id or None, job_id=selected_job_id or None) }}">
+                    Previous
+                </a>
+
+            {% else %}
+
+                <span class="disabled">
+                    Previous
+                </span>
+
+            {% endif %}
+
+
+            {% for p in range(1, total_pages + 1) %}
+
+                {% if p == page %}
+
+                    <span class="current">
+                        {{ p }}
+                    </span>
+
+                {% else %}
+
+                    <a href="{{ url_for('admin_applications', page=p, company_id=selected_company_id or None, job_id=selected_job_id or None) }}">
+                        {{ p }}
+                    </a>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            {% if page < total_pages %}
+
+                <a href="{{ url_for('admin_applications', page=page+1, company_id=selected_company_id or None, job_id=selected_job_id or None) }}">
+                    Next
+                </a>
+
+            {% else %}
+
+                <span class="disabled">
+                    Next
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+    {% else %}
+
+        <div class="empty-message">
+            {% if selected_company_id or selected_job_id %}
+                <p>No applications match the selected filters.</p>
+                <p><a href="/admin/applications">Clear filters</a> to see all applications.</p>
+            {% else %}
+                <p>No applications received yet.</p>
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

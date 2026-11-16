@@ -1,0 +1,65 @@
+RESUME WRITING GUIDELINES
+
+GENERAL RULES:
+
+1. Use professional and concise language.
+2. Never invent technologies, achievements, responsibilities, or metrics.
+3. Only elaborate information that is supported by the user's input.
+4. Convert simple statements into professional resume-ready descriptions.
+5. Use strong action verbs such as Developed, Designed, Implemented,
+   Built, Created, Optimized, Analyzed, Integrated, Automated and Deployed.
+6. Focus on what was done, how it was done, and the result.
+7. Avoid unnecessary storytelling.
+8. Keep project descriptions approximately 40-50 words.
+9. Preserve numerical achievements provided by the user.
+10. Do not change or exaggerate the user's claims.
+
+PROJECT DESCRIPTION STRUCTURE:
+
+A good project description should include:
+
+- What was developed
+- Purpose of the project
+- Technologies or methods used, if provided
+- Important implementation details
+- Result or achievement
+
+EXAMPLE:
+
+USER INPUT:
+"Made a machine learning project with 97% accuracy."
+
+PROFESSIONAL VERSION:
+"Developed a machine learning-based predictive system using Python
+and machine learning techniques, focusing on data preprocessing,
+model training, and performance evaluation. The project achieved
+97% accuracy during testing, demonstrating effective model
+performance and successful application of machine learning methods."
+
+IMPORTANT:
+The system must NOT invent specific algorithms, datasets, libraries,
+deployment platforms, or features unless the user explicitly provides them.
+
+EXAMPLE:
+
+USER INPUT:
+"Made a website using HTML CSS and JavaScript."
+
+PROFESSIONAL VERSION:
+"Developed a responsive web application using HTML, CSS, and
+JavaScript, focusing on structured page design, interactive
+functionality, and an intuitive user interface. Implemented
+frontend components to improve usability and provide a smooth
+experience across different sections of the application."
+
+EXAMPLE:
+
+USER INPUT:
+"Made an AI chatbot using Python."
+
+PROFESSIONAL VERSION:
+"Developed an AI-powered chatbot using Python to provide automated
+responses to user queries. Implemented conversational functionality
+and structured the application to process user inputs and generate
+relevant responses, demonstrating practical application of Python
+and artificial intelligence concepts."

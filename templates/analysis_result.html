@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis - Career Companion</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style-v2.css') }}"
+    >
+
+</head>
+
+<body{% if session.role == 'admin' %} class="theme-admin"{% endif %}>
+
+<nav>
+
+    <h2>Career Companion</h2>
+
+    <div>
+        {% if session.role == 'student' %}
+            <a href="/student/dashboard">Dashboard</a>
+            <a href="/jobs">Browse Jobs</a>
+            <a href="/analyzer" class="active">Resume Analyzer</a>
+            <a href="/generator">Resume Generator</a>
+            <a href="/interview-prep">Interview Prep</a>
+            <a href="/student/applications">My Applications</a>
+            <a href="/student/profile">My Profile</a>
+            <a href="/logout" class="nav-logout">Logout</a>
+        {% elif session.role == 'admin' %}
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/analyzer" class="active">Resume Analyzer</a>
+            <a href="/generator">Resume Generator</a>
+            <a href="/logout" class="nav-logout">Logout</a>
+        {% else %}
+            <a href="/">Home</a>
+            <a href="/generator">Resume Generator</a>
+            <a href="/analyzer" class="active">Resume Analyzer</a>
+            <a href="/login">Log In</a>
+        {% endif %}
+    </div>
+
+</nav>
+<div class="breadcrumb-bar medium">
+    <div class="breadcrumb">
+        {% if session.role == 'student' %}
+        <a href="/student/dashboard">Dashboard</a>
+        {% elif session.role == 'admin' %}
+        <a href="/admin/dashboard">Dashboard</a>
+        {% else %}
+        <a href="/">Home</a>
+        {% endif %}
+        <span class="sep">/</span>
+        <a href="/analyzer">Resume Analyzer</a>
+        <span class="sep">/</span>
+        <span class="current">Results</span>
+    </div>
+</div>
+
+
+
+<div class="analysis-container">
+
+    <h1>Resume Analysis</h1>
+
+    <h2>Target Role: {{ role }}</h2>
+
+
+    <!-- OVERALL SCORE -->
+
+    <div class="overall-score">
+
+        <h3>Overall Resume Match</h3>
+
+        <div class="score-number">
+            {{ score }}/100
+        </div>
+
+    </div>
+
+
+    <!-- ELIGIBILITY -->
+
+    <div class="eligibility-card">
+
+        <h2>Job Eligibility</h2>
+
+        <h3>
+            {{ eligibility.status }}
+        </h3>
+
+        <p>
+            {{ eligibility.reason }}
+        </p>
+
+    </div>
+
+
+    <!-- CATEGORY SCORES -->
+
+    <h2>Match Breakdown</h2>
+
+    <div class="score-grid">
+
+        <div class="score-card">
+
+            <h3>Technical Skills</h3>
+
+            <p>
+                {{ category_scores.technical_skills }}%
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Projects</h3>
+
+            <p>
+                {{ category_scores.projects }}%
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Education</h3>
+
+            <p>
+                {{ category_scores.education }}%
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Certifications</h3>
+
+            <p>
+                {{ category_scores.certifications }}%
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>Experience</h3>
+
+            <p>
+                {{ category_scores.experience }}%
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <h3>ATS Keywords</h3>
+
+            <p>
+                {{ category_scores.keywords }}%
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- EDUCATION -->
+
+    <div class="comparison-section">
+
+        <h2>Education</h2>
+
+        <h3>✓ Matched</h3>
+
+        <ul>
+
+            {% for item in education.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing</h3>
+
+        <ul>
+
+            {% for item in education.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>⚠ Weak</h3>
+
+        <ul>
+
+            {% for item in education.weak %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- SKILLS -->
+
+    <div class="comparison-section">
+
+        <h2>Technical Skills</h2>
+
+        <h3>✓ Matched Skills</h3>
+
+        <ul>
+
+            {% for item in skills.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing Skills</h3>
+
+        <ul>
+
+            {% for item in skills.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>⚠ Weak Skills</h3>
+
+        <ul>
+
+            {% for item in skills.weak %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- PROJECTS -->
+
+    <div class="comparison-section">
+
+        <h2>Projects</h2>
+
+        <h3>✓ Relevant Projects</h3>
+
+        <ul>
+
+            {% for item in projects.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing Project Areas</h3>
+
+        <ul>
+
+            {% for item in projects.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>⚠ Weak Areas</h3>
+
+        <ul>
+
+            {% for item in projects.weak %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- CERTIFICATIONS -->
+
+    <div class="comparison-section">
+
+        <h2>Certifications</h2>
+
+        <h3>✓ Matched</h3>
+
+        <ul>
+
+            {% for item in certifications.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing</h3>
+
+        <ul>
+
+            {% for item in certifications.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>⚠ Weak</h3>
+
+        <ul>
+
+            {% for item in certifications.weak %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- EXPERIENCE -->
+
+    <div class="comparison-section">
+
+        <h2>Experience</h2>
+
+        <h3>✓ Relevant Experience</h3>
+
+        <ul>
+
+            {% for item in experience.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing Experience</h3>
+
+        <ul>
+
+            {% for item in experience.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>⚠ Weak Areas</h3>
+
+        <ul>
+
+            {% for item in experience.weak %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- KEYWORDS -->
+
+    <div class="comparison-section">
+
+        <h2>ATS Keyword Analysis</h2>
+
+        <h3>✓ Matched Keywords</h3>
+
+        <ul>
+
+            {% for item in keywords.matched %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>✗ Missing Keywords</h3>
+
+        <ul>
+
+            {% for item in keywords.missing %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- STRENGTHS -->
+
+    <div class="comparison-section">
+
+        <h2>Candidate Strengths</h2>
+
+        <ul>
+
+            {% for item in strengths %}
+
+            <li>✓ {{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- WEAK AREAS -->
+
+    <div class="comparison-section">
+
+        <h2>Areas to Improve</h2>
+
+        <ul>
+
+            {% for item in weak_areas %}
+
+            <li>⚠ {{ item }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- RECOMMENDATIONS -->
+
+    <div class="comparison-section">
+
+        <h2>Personalized Recommendations</h2>
+
+        <ol>
+
+            {% for item in recommendations %}
+
+            <li>{{ item }}</li>
+
+            {% endfor %}
+
+        </ol>
+
+    </div>
+
+
+    <a href="/analyzer">
+
+        <button>
+            Analyze Another Resume
+        </button>
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

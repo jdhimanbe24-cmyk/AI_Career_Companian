@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<div class="auth-shell">
+
+    <div class="auth-grid">
+
+        <div class="auth-visual">
+            <div class="auth-visual-brand">
+                <span class="mark"></span>
+                <span>Career Companion</span>
+            </div>
+
+            <div class="auth-visual-body">
+                <h1>Your next offer starts here.</h1>
+                <p>Track applications, sharpen your resume, and walk into interviews prepared — all in one place.</p>
+
+                <ul class="auth-visual-points">
+                    <li>AI resume analysis &amp; builder</li>
+                    <li>Role-specific interview prep</li>
+                    <li>Real-time application tracking</li>
+                </ul>
+            </div>
+
+            <div class="auth-visual-foot">AI Career &amp; Placement Companion</div>
+        </div>
+
+        <div class="auth-form-panel">
+            <div class="auth-container">
+
+                <h2>Welcome back</h2>
+
+                <p class="subtitle">Log in to continue your placement journey</p>
+
+                {% if reset_success %}
+                <div class="form-success">Your password has been reset. Log in with your new password.</div>
+                {% endif %}
+
+                {% if error %}
+                <div class="form-error">{{ error }}</div>
+                {% endif %}
+
+                <form method="POST" action="/login">
+
+                    <label>Email</label>
+                    <input type="email"
+                           name="email"
+                           placeholder="you@example.com"
+                           value="{{ email or '' }}"
+                           required
+                           {% if not email %}autofocus{% endif %}>
+
+                    <div class="field-label-row">
+                        <label>Password</label>
+                        <a class="forgot-link" href="/forgot-password">Forgot password?</a>
+                    </div>
+                    <div class="password-field">
+                        <input type="password"
+                               id="login-password"
+                               name="password"
+                               placeholder="Enter your password"
+                               required
+                               {% if email %}autofocus{% endif %}>
+                        <button type="button"
+                                class="password-toggle"
+                                data-target="login-password"
+                                aria-label="Show password">👁</button>
+                    </div>
+
+                    <button type="submit">
+                        Log In
+                    </button>
+
+                </form>
+
+                <p class="form-footer">
+                    Don't have an account?
+                    <a href="/register">Create one</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll(".password-toggle").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var input = document.getElementById(btn.getAttribute("data-target"));
+            if (!input) return;
+            var showing = input.type === "text";
+            input.type = showing ? "password" : "text";
+            btn.textContent = showing ? "👁" : "🙈";
+            btn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+        });
+    });
+</script>
+
+</body>
+</html>

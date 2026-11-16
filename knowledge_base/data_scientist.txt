@@ -1,0 +1,145 @@
+ROLE: Data Scientist
+
+ROLE DESCRIPTION:
+A Data Scientist collects, analyzes and interprets data to generate
+insights, build predictive models and support data-driven decision
+making.
+
+EDUCATION:
+Typical candidates have a degree in Computer Science, Computer
+Engineering, Information Technology, Data Science, Statistics,
+Mathematics, Artificial Intelligence or a related technical field.
+
+CORE SKILLS:
+Python
+Statistics
+Probability
+Data Analysis
+Pandas
+NumPy
+SQL
+Data Visualization
+Scikit-learn
+Git
+
+ADVANCED DATA SCIENCE SKILLS:
+Machine Learning
+Deep Learning
+Regression
+Classification
+Clustering
+Feature Engineering
+Feature Selection
+Time Series Analysis
+Natural Language Processing
+Recommendation Systems
+Predictive Analytics
+A/B Testing
+
+DATA VISUALIZATION:
+Matplotlib
+Seaborn
+Plotly
+Power BI
+Tableau
+
+DATABASE AND BIG DATA SKILLS:
+SQL
+MySQL
+PostgreSQL
+MongoDB
+Data Warehousing
+ETL
+Apache Spark
+Hadoop
+
+CLOUD AND DEPLOYMENT SKILLS:
+AWS
+Microsoft Azure
+Google Cloud
+Docker
+FastAPI
+REST API
+Model Deployment
+MLOps
+
+PROJECT EXPECTATIONS:
+Candidates should ideally have 2 or more relevant technical projects.
+
+Relevant projects include:
+Predictive analytics applications
+Machine Learning applications
+Data analysis projects
+Customer segmentation projects
+Recommendation systems
+Time series forecasting projects
+NLP applications
+Business intelligence projects
+Data visualization projects
+End-to-end data science projects
+
+PROJECT QUALITY:
+Projects should explain the problem solved, dataset used,
+technologies used, candidate's contribution, data preprocessing,
+analysis, model implementation, evaluation metrics and measurable
+results where possible.
+
+CERTIFICATIONS:
+Relevant certifications in:
+Data Science
+Machine Learning
+Python
+Statistics
+SQL
+Artificial Intelligence
+Cloud Computing
+Power BI
+Tableau
+
+Certifications are beneficial but are not always mandatory.
+
+EXPERIENCE:
+Internships, research experience, freelance projects or relevant
+industry experience are beneficial.
+
+ENTRY LEVEL:
+For entry-level candidates, strong data science projects,
+demonstrated statistical knowledge and practical machine learning
+experience can partially compensate for lack of professional
+experience.
+
+RESUME EXPECTATIONS:
+Resume should contain:
+Contact Information
+Professional Summary
+Education
+Technical Skills
+Projects
+Experience
+Certifications
+Achievements
+
+ATS KEYWORDS:
+Python
+Data Science
+Machine Learning
+Statistics
+Probability
+Pandas
+NumPy
+SQL
+Scikit-learn
+Data Analysis
+Data Visualization
+Feature Engineering
+Regression
+Classification
+Clustering
+NLP
+Deep Learning
+Power BI
+Tableau
+AWS
+Docker
+MLOps
+Predictive Analytics

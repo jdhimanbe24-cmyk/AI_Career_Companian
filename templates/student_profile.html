@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile" class="active">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar narrow">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <span class="current">My Profile</span>
+    </div>
+</div>
+
+
+<div class="form-container">
+
+    <h1>My Profile</h1>
+    <p>Keep this up to date — it powers your resume generator and job matching.</p>
+
+    <form method="POST" action="/student/profile" enctype="multipart/form-data">
+
+        <h2>Personal Information</h2>
+
+        <label>Name</label>
+        <input type="text"
+               name="name"
+               value="{{ student.name if student else '' }}"
+               required>
+
+        <label>Phone</label>
+        <input type="text"
+               name="phone"
+               value="{{ student.phone if student else '' }}">
+
+        <h2>Education</h2>
+
+        <label>College</label>
+        <input type="text"
+               name="college"
+               value="{{ student.college if student else '' }}">
+
+        <label>Degree</label>
+        <input type="text"
+               name="degree"
+               placeholder="B.E. / B.Tech"
+               value="{{ student.degree if student else '' }}">
+
+        <label>Branch</label>
+        <input type="text"
+               name="branch"
+               placeholder="Computer Engineering"
+               value="{{ student.branch if student else '' }}">
+
+        <label>CGPA</label>
+        <input type="number"
+               name="cgpa"
+               step="0.01"
+               min="0"
+               max="10"
+               value="{{ student.cgpa if student else '' }}">
+
+        <label>Graduation Year</label>
+        <input type="number"
+               name="graduation_year"
+               value="{{ student.graduation_year if student else '' }}">
+
+        <h2>Skills &amp; Experience</h2>
+
+        <label>Skills</label>
+        <textarea name="skills"
+                  placeholder="Python, C++, SQL, Machine Learning, Git">{{ student.skills if student else '' }}</textarea>
+
+        <label>Projects</label>
+        <textarea name="projects"
+                  placeholder="Describe your projects">{{ student.projects if student else '' }}</textarea>
+
+        <label>Certifications</label>
+        <textarea name="certifications"
+                  placeholder="List your certifications">{{ student.certifications if student else '' }}</textarea>
+
+        <label>Experience</label>
+        <textarea name="experience"
+                  placeholder="Internships, work experience, etc.">{{ student.experience if student else '' }}</textarea>
+
+        <label>Preferred Role</label>
+        <input type="text"
+               name="preferred_role"
+               placeholder="AI/ML Engineer"
+               value="{{ student.preferred_role if student else '' }}">
+
+       <h2>Resume</h2>
+
+       {% if resume %}
+       <div class="resume-box">
+              <p>
+              <strong>Current Resume:</strong>
+              {{ resume.file_name }}
+              </p>
+
+              <a href="/student/resume/view" target="_blank">
+              <button type="button" class="btn-sm">View Resume</button>
+              </a>
+       </div>
+       {% else %}
+       <p class="hint">No resume uploaded yet.</p>
+       {% endif %}
+
+       <label for="resume">Upload Resume (PDF)</label>
+
+       <input
+       type="file"
+       id="resume"
+       name="resume"
+       accept=".pdf"
+       >
+
+       <p class="hint">
+       Upload your latest resume. Companies can use this resume
+       only when you give resume consent during a job application.
+       </p>
+
+        <button type="submit">
+            Save Profile
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

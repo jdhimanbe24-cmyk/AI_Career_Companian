@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Job - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body class="theme-admin">
+
+<nav>
+    <h2>Career Companion — Admin</h2>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/companies">Companies</a>
+        <a href="/admin/jobs" class="active">Jobs</a>
+        <a href="/admin/applications">Applications</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="form-container">
+
+    <h1>Add Job</h1>
+    <p>Fill in the role details below — they power the student job board and the resume match analyzer.</p>
+
+    <form method="POST" action="/admin/job/add">
+
+        <h2>Job Information</h2>
+
+        <label>Company</label>
+        <select name="company_id" required>
+
+            <option value="">Select Company</option>
+
+            {% for company in companies %}
+                <option value="{{ company.id }}">
+                    {{ company.name }}
+                </option>
+            {% endfor %}
+
+        </select>
+
+        {% if not companies %}
+            <p class="hint">
+                No companies yet — <a href="/admin/company/add">add one first</a>.
+            </p>
+        {% endif %}
+
+        <label>Job Title</label>
+        <input type="text"
+               name="title"
+               placeholder="Software Engineer Intern"
+               required>
+
+        <label>Job Description</label>
+        <textarea name="description"
+                  placeholder="Describe the job role"></textarea>
+
+
+        <h2>Requirements</h2>
+
+        <label>Education</label>
+        <textarea name="education"
+                  placeholder="B.E./B.Tech in Computer Science or related field"></textarea>
+
+        <label>Required Skills</label>
+        <textarea name="required_skills"
+                  placeholder="Python, C++, SQL, DSA"></textarea>
+
+        <label>Recommended Qualities</label>
+        <textarea name="recommended_qualities"
+                  placeholder="Git, REST APIs, problem solving"></textarea>
+
+        <label>Preferred Qualities</label>
+        <textarea name="preferred_qualities"
+                  placeholder="Docker, AWS, Machine Learning"></textarea>
+
+        <label>Experience</label>
+        <textarea name="experience"
+                  placeholder="0-2 years / Internship experience"></textarea>
+
+        <label>Certifications</label>
+        <textarea name="certifications"
+                  placeholder="Relevant technical certifications"></textarea>
+
+
+        <h2>Job Details</h2>
+
+        <label>Location</label>
+        <input type="text"
+               name="location"
+               placeholder="Bangalore">
+
+        <label>Job Type</label>
+        <select name="job_type">
+            <option value="Internship">Internship</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+        </select>
+
+        <label>CTC</label>
+        <input type="text"
+            name="ctc"
+            placeholder="e.g. ₹12 LPA">
+
+        <label>Stipend</label>
+        <input type="text"
+            name="stipend"
+            placeholder="e.g. ₹30,000/month">
+
+        <label>Application Deadline</label>
+        <input type="date"
+               name="deadline">
+
+        <button type="submit">
+            Add Job
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

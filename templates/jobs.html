@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Jobs - Career Companion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style-v2.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Career Companion</h2>
+    <div>
+        <a href="/student/dashboard">Dashboard</a>
+        <a href="/jobs" class="active">Browse Jobs</a>
+        <a href="/analyzer">Resume Analyzer</a>
+        <a href="/generator">Resume Generator</a>
+        <a href="/interview-prep">Interview Prep</a>
+        <a href="/student/applications">My Applications</a>
+        <a href="/student/profile">My Profile</a>
+        <a href="/logout" class="nav-logout">Logout</a>
+    </div>
+</nav>
+<div class="breadcrumb-bar">
+    <div class="breadcrumb">
+        <a href="/student/dashboard">Dashboard</a>
+        <span class="sep">/</span>
+        <span class="current">Browse Jobs</span>
+    </div>
+</div>
+
+
+<div class="page-shell">
+
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">PLACEMENT OPPORTUNITIES</span>
+            <h1>Available Jobs</h1>
+            <p>Explore placement and internship openings posted by partner companies.</p>
+        </div>
+    </div>
+
+    <form class="filter-bar" method="GET" action="/jobs" id="jobs-filter-form">
+
+        <div class="filter-field">
+            <label for="filter-title">Job Title</label>
+            <select id="filter-title" name="q">
+                <option value="">All Jobs</option>
+                {% for title in all_job_titles %}
+                <option value="{{ title }}" {% if search_query and search_query|lower == title|lower %}selected{% endif %}>{{ title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="filter-apply">Search</button>
+            <a class="filter-clear" id="filter-clear-link" href="/jobs" {% if not search_query %}hidden{% endif %}>Clear</a>
+        </div>
+
+    </form>
+
+    <div id="jobs-list">
+        {% for job in jobs %}
+
+        <div class="job-card" data-job-title="{{ job.title|lower }}">
+
+            <div class="job-main">
+                <h2>{{ job.title }}</h2>
+                <div class="job-company">{{ job.company_name }}</div>
+
+                <div class="job-meta">
+                    <span>📍 <strong>{{ job.location or "Not specified" }}</strong></span>
+                    <span>💼 <strong>{{ job.job_type or "Not specified" }}</strong></span>
+                    <span>💰 <strong>{{ job.ctc or job.stipend or "Not disclosed" }}</strong></span>
+                    <span>⏳ <strong>{{ job.deadline or "Open" }}</strong></span>
+                </div>
+            </div>
+
+            <div class="job-cta">
+                <a href="/job/{{ job.id }}">
+                    <button type="button">View Details</button>
+                </a>
+            </div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="empty-state" id="empty-state-none-posted" {% if jobs %}hidden{% endif %}>
+        <h3>No Jobs Available Yet</h3>
+        <p>There are currently no jobs posted by the administrator. Check back soon.</p>
+    </div>
+
+    <div class="empty-state" id="empty-state-no-match" hidden>
+        <h3>No jobs match "<span id="empty-state-query"></span>"</h3>
+        <p>Try a different job title, or <a href="/jobs" id="empty-state-clear">clear the filter</a> to see every open role.</p>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    var select = document.getElementById("filter-title");
+    var cards = Array.prototype.slice.call(document.querySelectorAll("#jobs-list .job-card"));
+    var hasAnyJobs = cards.length > 0;
+    var emptyNonePosted = document.getElementById("empty-state-none-posted");
+    var emptyNoMatch = document.getElementById("empty-state-no-match");
+    var emptyQuerySpan = document.getElementById("empty-state-query");
+    var clearLink = document.getElementById("filter-clear-link");
+
+    if (!select) {
+        return;
+    }
+
+    function setClearVisibility(visible) {
+        clearLink.hidden = !visible;
+        // .filter-clear has its own `display: inline-flex` rule, which beats
+        // the [hidden] attribute's UA-stylesheet display:none, so set it
+        // explicitly too rather than relying on the attribute alone.
+        clearLink.style.display = visible ? "inline-flex" : "none";
+    }
+
+    function applyFilter() {
+        var term = select.value.trim().toLowerCase();
+
+        setClearVisibility(term.length > 0);
+
+        if (!hasAnyJobs) {
+            // Nothing was ever posted - always show the "none posted" state.
+            emptyNonePosted.hidden = false;
+            emptyNoMatch.hidden = true;
+            return;
+        }
+
+        var visibleCount = 0;
+
+        cards.forEach(function (card) {
+            var title = card.getAttribute("data-job-title") || "";
+            // Dropdown picks an exact title, so match exactly rather than
+            // as a substring.
+            var matches = term === "" || title === term;
+            card.hidden = !matches;
+            // .job-card has its own `display: flex` rule, which beats the
+            // [hidden] attribute's UA-stylesheet display:none, so set it
+            // explicitly too rather than relying on the attribute alone.
+            card.style.display = matches ? "" : "none";
+            if (matches) {
+                visibleCount += 1;
+            }
+        });
+
+        emptyNonePosted.hidden = true;
+
+        if (visibleCount === 0) {
+            var selectedOption = select.options[select.selectedIndex];
+            emptyQuerySpan.textContent = selectedOption ? selectedOption.textContent : select.value;
+            emptyNoMatch.hidden = false;
+        } else {
+            emptyNoMatch.hidden = true;
+        }
+    }
+
+    select.addEventListener("change", applyFilter);
+
+    document.getElementById("jobs-filter-form").addEventListener("submit", function (e) {
+        // Filtering already happens live client-side on selection; no need
+        // for a full page reload when JS is available.
+        e.preventDefault();
+        applyFilter();
+    });
+
+    if (clearLink) {
+        clearLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            select.value = "";
+            applyFilter();
+        });
+    }
+
+    // Run once on load in case the server already applied a ?q= filter
+    // (e.g. direct link / no-JS fallback / page refresh).
+    applyFilter();
+})();
+</script>
+
+</body>
+</html>
