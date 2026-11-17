@@ -2301,6 +2301,7 @@ def register():
             (email, password, role)
             VALUES
             (%s, %s, %s)
+            RETURNING id
             """,
             (
                 email,
@@ -2309,7 +2310,7 @@ def register():
             )
         )
 
-        user_id = cursor.lastrowid
+        user_id = cursor.fetchone()[0]
 
         if role == "student":
 
@@ -2335,7 +2336,7 @@ def register():
         cursor.close()
         connection.close()
 
-        if "Duplicate entry" in str(e):
+        if "duplicate key value violates unique constraint" in str(e):
 
             friendly_error = "An account with this email already exists. Try logging in instead."
 
@@ -2608,7 +2609,7 @@ def reset_password(token):
         cursor.execute(
             """
             UPDATE password_resets
-            SET used = 1
+            SET used = TRUE
             WHERE id = %s
             """,
             (reset_row["id"],)

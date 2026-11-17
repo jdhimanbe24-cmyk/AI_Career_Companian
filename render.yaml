@@ -1,25 +1,24 @@
+databases:
+  - name: ai-career-placement-companion-db
+    plan: free
+    region: oregon
+
 services:
   - type: web
     name: ai-career-placement-companion
     runtime: python
     plan: free
     region: oregon
-    buildCommand: "pip install -r requirements.txt && python rag/create_database.py"
+    buildCommand: "pip install -r requirements.txt && python rag/create_database.py && python init_postgres_schema.py"
     startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-career-placement-companion-db
+          property: connectionString
       - key: GROQ_API_KEY
-        sync: false
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        sync: false
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: DB_NAME
         sync: false
       - key: SECRET_KEY
         sync: false
