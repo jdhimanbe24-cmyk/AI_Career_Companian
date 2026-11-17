@@ -3,8 +3,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Render's Postgres (and most managed Postgres providers) expose a single
-# connection string rather than separate host/port/user/password fields.
-DATABASE_URL = os.getenv("DATABASE_URL")
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "port": int(os.getenv("DB_PORT", "3306")),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME")
+}
 
 SECRET_KEY = os.getenv("SECRET_KEY")
